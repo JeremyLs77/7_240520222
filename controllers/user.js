@@ -37,10 +37,14 @@ exports.login = (req, res, next) => {
           } else {
             console.log(results[0].uti_id+"s'est connecté");
             res.status(200).json({
+              uti_id: results[0].id,
+              email: results[0].email,
+              isAdmin: results[0].isAdmin,
               token: jwt.sign(
-                { uti_id: results[0].id },
-                process.env.JWT_KEY,
-                { expiresIn: '24h' },),
+                { uti_id: results[0].id, 
+                  isAdmin: results[0].isAdmin }, 
+                  'RANDOM_TOKEN_SECRET', 
+                { expiresIn: '24h' }),
             });
           }
         //});
