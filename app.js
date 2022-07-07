@@ -1,9 +1,12 @@
 const express = require("express");
 const app = express();
+const bodyParser = require('body-parser');
 const path = require("path");
 const helmet = require("helmet");
 const cookieSession = require("cookie-session");
 const rateLimit = require("express-rate-limit");
+const userRoute = require("./routes/user");
+const messageRoute = require("./routes/message");
 
 // Parametrage des headers
 app.use((req, res, next) => {
@@ -12,6 +15,11 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
   next();
 });
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit : "50mb"}))
+
+app.use(express.json());
 
 // Gestion des cookies
 app.use(
@@ -31,6 +39,10 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
+
+//Routes
+app.use('/user', userRoute);
+app.use('/message', messageRoute);
 
 // Sécurisation des headers HTTP
 app.use(helmet());

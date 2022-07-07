@@ -1,43 +1,84 @@
 // Imports
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const db = require("../mysqlconfig");
+const dotenv = require("dotenv");
+dotenv.config({ path: "./.env" });
 
 // Fonction signup
 exports.signup = (req, res, next) => {
-    bcrypt
-      .hash(req.body.password, 10)
-      .then((hash) => {
-        const user = new User({
-          email: req.body.email,
-          password: hash,
-        });
-        user
-          .save()
-          .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
-          .catch((error) => res.status(400).json({ error }));
-      })
-      .catch((error) => res.status(500).json({ error }));
-  };
-
-  // Fonction login
-exports.login = (req, res, next) => {
-    User.findOne({ email: req.body.email })
-      .then((user) => {
-        if (!user) {
-          return res.status(401).json({ error: "Utilisateur non trouvé !" });
+  const uti = [[req.body.nom, req.body.prenom, req.body.email, req.body.password]];
+  console.log(req.body);
+  var sql = "INSERT INTO uti (nom, prenom, email, password) VALUES ?"
+  db.query(sql, [uti], function (err, result) {
+        if (err) {
+          console.log(err);
+          return res.status(400).json({ error: err });
+        } 
+          console.log("toto");
+          res.status(201).json({ message: 'Utilisateur créé' });
         }
-        bcrypt
-          .compare(req.body.password, user.password)
-          .then((valid) => {
-            if (!valid) {
-              return res.status(401).json({ error: "Mot de passe incorrect !" });
-            }
+      )};
+
+
+// Fonction login
+exports.login = (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  console.log(req.body.password);
+  if (email && password) {
+    db.query("SELECT * FROM uti WHERE email= ?", email, (error, results, _fields) => {
+      console.log(req.body.password);
+      if (results.length > 0) {
+        console.log(results[0].password===password)
+        //bcrypt.compare(password, results[0].password).then((valid) => {
+          if (!results[0].password===password) {
+            res.status(401).json({ message: "Utilisateur ou mot de passe inconnu" });
+          } else {
+            console.log(results[0].uti_id+"s'est connecté");
             res.status(200).json({
-              userId: user._id,
-              token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", { expiresIn: "24h" }),
+              token: jwt.sign(
+                { uti_id: results[0].id },
+                process.env.JWT_KEY,
+                { expiresIn: '24h' },),
             });
-          })
-          .catch((error) => res.status(500).json({ error }));
-      })
-      .catch((error) => res.status(500).json({ error }));
+          }
+        //});
+      } else {
+        res.status(401).json({ message: "Utilisateur ou mot de passe inconnu" });
+      }
+    });
+  } else {
+    res.status(500).json({ message: "Entrez vos identifiants" });
+};
+}
+
+//Fonction suppression
+exports.deleteUser = (req, res, next) => {
+  db.query('DELETE FROM uti WHERE uti_id= ?', req.body.uti_id, (error, result, field) => {
+    if (error) {
+      console.log(error);
+      return res.status(400).json(error);
+    }
+    console.log("Le compte utilisateur a bien été supprimé");
+    return res.status(200).json({ message: "Votre compte utilisateur a bien été supprimé" });
+  });
+};
+
+//Fonction modification
+exports.updateUser = (req, res, next) => {
+  const lastname = req.body.nom;
+  const firstname =  req.body.prenom;
+  const password = req.body.password;
+  const email = req.body.email;
+  console.log(req.body);
+  //let passwords = req.body.password;
+  //bcrypt.hash(passwords, 10).then((hash) => {
+    //passwords = hash;
+    db.query(`UPDATE uti SET nom='${lastname}', prenom='${firstname}', password='${password}', isAdmin=${0} WHERE email=${email}`, (error, results, fields) => {
+      if (error) {
+        return res.status(400).json(error);
+      }
+      return res.status(200).json({ message: "Vos informations ont bien été modifiées !" });
+    });
   };
