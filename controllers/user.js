@@ -10,7 +10,7 @@ const SECRET_KEY = process.env.JWT_KEY;
 exports.signup = (req, res, next) => {
   const uti = [[req.body.nom, req.body.prenom, req.body.email, req.body.password]];
   console.log(req.body);
-  var sql = "INSERT INTO uti (nom, prenom, email, password) VALUES ?"
+  let sql = "INSERT INTO uti (nom, prenom, email, password) VALUES ?"
   db.query(sql, [uti], function (err, result) {
         if (err) {
           console.log(err);
@@ -101,11 +101,12 @@ exports.updateUser = (req, res, next) => {
   const firstname =  req.body.prenom;
   const password = req.body.password;
   const email = req.body.email;
+  const id = req.body.uti_id;
   console.log(req.body);
   //let passwords = req.body.password;
   //bcrypt.hash(passwords, 10).then((hash) => {
     //passwords = hash;
-    db.query(`UPDATE uti SET nom='${lastname}', prenom='${firstname}', password='${password}', isAdmin=${0} WHERE email=${email}`, (error, results, fields) => {
+    db.query(`UPDATE uti SET nom='${lastname}', prenom='${firstname}', password='${password}', email= '${email}' WHERE uti_id=${id}`, (error, results, fields) => {
       if (error) {
         return res.status(400).json(error);
       }

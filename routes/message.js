@@ -6,10 +6,10 @@ const auth = require('../middlewares/auth');
 const multer = require('../middlewares/multer-config');
 
 // Routes
-router.post('/create', multer, messageCtrl.createMessage);
-router.get('/getallmessages', messageCtrl.getallMessages);
-router.post('/editmessage', messageCtrl.editMessage);
-router.delete('/deleteMessage/:id', messageCtrl.deleteMessage);
+router.post('/create', auth, multer, messageCtrl.createMessage);
+router.get('/getallmessages', auth, messageCtrl.getallMessages);
+router.post('/editmessage', auth, messageCtrl.editMessage);
+router.delete('/deleteMessage/:id', auth, messageCtrl.deleteMessage);
 
 // Exports
 module.exports = router;

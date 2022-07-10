@@ -2,6 +2,7 @@ const db = require("../mysqlconfig");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
 
+
 // Afficher les posts
 exports.getallMessages = (req, res, next) => {
   db.query('SELECT * FROM post', (error, result) => {
@@ -14,9 +15,15 @@ exports.getallMessages = (req, res, next) => {
 
 // Création d'un post //
 exports.createMessage = (req, res, next) => {
-  const post = [[req.body.titre, req.body.texte, req.body.topic_id, req.body.id_1]];
+  const post = ({
+    texte: req.body.texte,
+    titre: req.body.titre,
+    image: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null,
+    topic_id: req.body.topic_id,
+    id_1: req.body.id_1
+  })
   console.log(req.body);
-  var sql = "INSERT INTO post (titre, texte, topic_id, id_1) VALUES ?"
+  let sql = "INSERT INTO post SET ?";
   db.query(sql, [post], function (err, result) {
     if (err) {
       console.log(err);
