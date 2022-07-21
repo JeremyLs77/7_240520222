@@ -4,23 +4,6 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
 const SECRET_KEY = process.env.JWT_KEY;
 
-//module.exports = (req, res, next) => {
-  //try {
-    //const token = req.headers.authorization.split(" ")[1];
-    //const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
-    //const uti_id = decodedToken.uti_id;
-    //req.auth = { uti_id };
-    //if (req.body.uti_id && req.body.uti_id !== uti_id) {
-      //throw "Invalid user ID";
-    //} else {
-      //next();
-    //}
-  //} catch {
-    //res.status(401).json({
-      //error: new Error("Invalid request!"),
-    //});
-  //}
-//};
 
 module.exports = (req, res, next) => {
   let token = req.headers['x-access-token'] || req.headers['authorization'];
@@ -36,15 +19,20 @@ module.exports = (req, res, next) => {
 
               const expiresIn = 24 * 60 * 60;
               const newToken  = jwt.sign({
-                  user : decoded.user
+                  uti_id : decoded.id,
+                  status : decoded.status,
+                  role: decoded.role
               },
               SECRET_KEY,
               {
                   expiresIn: expiresIn
               });
-
+              console.log(decoded.role);
+              console.log(decoded.uti_id);
               res.header('Authorization', 'Bearer ' + newToken);
+
               next();
+          
           }
       });
   } else {

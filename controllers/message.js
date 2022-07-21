@@ -37,6 +37,7 @@ exports.createMessage = (req, res, next) => {
 // Suppression d'un post
 exports.deleteMessage = (req, res, next) => {
   db.query('DELETE FROM post WHERE post_id= ?', req.body.post_id, (error, result, field) => {
+  
     if (error) {
       console.log(error);
       return res.status(400).json(error);
