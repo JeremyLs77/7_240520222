@@ -1,0 +1,156 @@
+@charset "UTF-8";
+body {
+  margin: 0;
+}
+
+/* Importation de la police de caractères */
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Regular.ttf");
+}
+/* Paramètres des polices de caractères */
+h1,
+h2,
+h3,
+h4,
+a,
+p {
+  font-family: "Roboto", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.btnlogin {
+  background-color: rgb(105, 105, 105);
+  background: rgb(200, 20, 20);
+  border: 0px;
+  color: white;
+  position: relative;
+  z-index: 1;
+  border-radius: 0.3rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 2px 2px 5px -3px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+
+/* Paramètres du header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding-bottom: 4rem;
+  padding: 0;
+}
+.header__logo {
+  max-width: 40%;
+  max-height: 33%;
+}
+
+.header__navitems {
+  margin: 5px 5px 5px 5px;
+  font-size: 1.2em;
+}
+
+/* Paramètres du footer */
+.footer {
+  background-color: #2b2e2c;
+  padding: 0.5rem 1.5rem 1rem 1rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.footer__Content {
+  display: flex;
+  color: white;
+  align-items: center;
+}
+.footer__heading {
+  color: white;
+  padding-bottom: 0.7rem;
+  font-weight: 500;
+}
+@media screen and (min-width: 750px) {
+  .footer__heading {
+    margin-left: 6%;
+  }
+}
+.footer__Text {
+  margin: 0rem 0rem 0rem 0rem;
+}
+
+/* Paramètres de la section "Bienvenue" */
+.welcome {
+  margin-bottom: 4rem;
+}
+.welcome__wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.welcome__logo {
+  max-width: 33%;
+  max-height: 100px;
+}
+
+/* Paramètres de la section "login" - page d'accueil */
+.Function__Display {
+  margin: 0px 0.7rem 0px 0.7rem;
+}
+@media screen and (min-width: 1250px) {
+  .Function__Display {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+.Function__Title {
+  margin: 2rem 0rem 1rem 6%;
+}
+.Function__Infoframe {
+  background-color: #9356DC;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: relative;
+  border-radius: 1.6rem;
+  padding: 0.7rem 0.7rem 0.7rem 0.7rem;
+  box-shadow: 4px 11px 8px -4px rgba(0, 0, 0, 0.24);
+  margin-bottom: 1.8rem;
+}
+.Function__Infoframe:hover {
+  background-color: #e2dfec;
+}
+.Function__Infoframe:hover .fas {
+  color: #9356DC;
+}
+@media screen and (min-width: 1250px) {
+  .Function__Infoframe {
+    width: 20%;
+    margin-top: 2rem;
+  }
+}
+.Function__Number {
+  background-color: #9356DC;
+  position: absolute;
+  left: -0.6rem;
+  color: white;
+  font-size: 0.8em;
+  border-radius: 50%;
+  width: 1.3rem;
+  height: 1.3rem;
+  border: 2px solid #9356DC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto";
+}
+.Function__Text {
+  font-weight: 800;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,18 @@
+@mixin flex-center {
+    display:flex;
+    align-items: center;
+}
+
+@mixin heading-menu{
+    margin-left: 1rem;
+    font: 1em "Roboto";
+    position: relative;
+    padding-bottom: 0.6rem;
+}
+
+@mixin desktop-only {
+    @media screen and (min-width: 1250px){
+        display:flex;
+        justify-content: space-around;
+    }
+}

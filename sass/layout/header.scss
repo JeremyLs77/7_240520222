@@ -1,0 +1,19 @@
+/* Paramètres du header */
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    padding-bottom: 4rem;
+    padding: 0;
+    &__logo{
+        max-width: 40%;
+        max-height: 33%;
+    }
+}
+
+.header__navitems{
+    margin : 5px 5px 5px 5px;
+    font-size: 1.2em;
+}

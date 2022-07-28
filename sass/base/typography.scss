@@ -1,0 +1,22 @@
+/* Importation de la police de caractères */
+
+@font-face {
+    font-family: "Roboto";
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+/* Paramètres des polices de caractères */
+
+h1,
+h2,
+h3,
+h4,
+a,
+p {
+    font-family: "Roboto", sans-serif;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}

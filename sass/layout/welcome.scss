@@ -1,0 +1,14 @@
+/* Paramètres de la section "Bienvenue" */
+
+.welcome{
+    margin-bottom: 4rem;
+    &__wrapper{
+    display: flex;
+    align-items: center;
+    }
+}
+
+.welcome__logo{
+    max-width: 33%;
+    max-height: 100px;
+}
