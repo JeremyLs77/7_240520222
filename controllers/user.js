@@ -58,42 +58,6 @@ exports.login = (req, res, next) => {
   }
 };
 
-// Fonction login
-//exports.login = (req, res, next) => {
-//const email = req.body.email;
-//const password = req.body.password;
-//console.log(req.body.password);
-//if (email && password) {
-//db.query("SELECT * FROM uti WHERE email= ?", email, (error, results, _fields) => {
-//console.log(req.body.password);
-//if (results.length > 0) {
-//console.log(results[0].password===password)
-//bcrypt.compare(password, results[0].password).then((valid) => {
-//if (!results[0].password===password) {
-//res.status(401).json({ message: "Utilisateur ou mot de passe inconnu" });
-//} else {
-//console.log(results[0].uti_id+"s'est connecté");
-//res.status(200).json({
-//uti_id: results[0].id,
-//email: results[0].email,
-//isAdmin: results[0].isAdmin,
-//token: jwt.sign(
-//{ uti_id: results[0].id,
-//isAdmin: results[0].isAdmin },
-//'RANDOM_TOKEN_SECRET',
-//{ expiresIn: '24h' }),
-//});
-//}
-//});
-//} else {
-//res.status(401).json({ message: "Utilisateur ou mot de passe inconnu" });
-//}
-//});
-//} else {
-//res.status(500).json({ message: "Entrez vos identifiants" });
-//};
-//}
-
 //Fonction suppression
 exports.deleteUser = (req, res, next) => {
   // Extraction du token du header authorization
