@@ -1,5 +1,5 @@
-JeremyLipszyc_7_240520222
 Projet 7 - Groupomania
+Formation développeur web 
 
 INSTALLATION
 
