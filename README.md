@@ -21,6 +21,7 @@ Ouvrir un terminal dans le dossier backend puis effectuer les lignes de commande
 
 npm install
 nodemon server
+
 FRONT END
 
 Ouvrir un autre terminal dans le dossier frontend puis effectuer les lignes de commandes suivantes :
