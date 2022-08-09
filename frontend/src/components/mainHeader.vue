@@ -5,7 +5,7 @@
         </div>
         <div class="header__navigation">
                 <router-link to="/" class="header__navitems">Accueil</router-link>
-                <router-link to="/about" class="header__navitems">Forum</router-link>
+                <router-link to="/profile" class="header__navitems">Profil</router-link>
                 <a to="/login" class="header__navitems" v-on:click="Logout()">Déconnexion</a>
         </div>
     </div>
@@ -37,20 +37,34 @@ export default {
 }
 @media all and (max-width: 1024px){
     .header{
-        &__liste{
-            &--lien{
-                font-size: 20px;
-            }
-        }
+    &__image{
+    max-width: 50%;
     }
+        &__image--logo{
+        width: 90%;
+        height: 90%;
+            }
+    }
+
+    .header__navitems{
+    margin : 1px 1px 1px 1px;
+    font-size: 0.9em;
+}
 }
 @media all and (max-width: 727px){
     .header{
-        &__liste{
-            &--lien{
-                font-size: 10px;
+        &__image{
+    max-width: 50%;
+    }
+        &__image--logo{
+        width: 90%;
+        height: 90%;
             }
-        }
     }
 }
+    .header__navitems{
+    margin : 1px 1px 1px 1px;
+    font-size: 0.9em;
+}
+
 </style>

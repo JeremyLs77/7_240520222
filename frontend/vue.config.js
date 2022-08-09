@@ -1,4 +1,10 @@
-const { defineConfig } = require('@vue/cli-service')
-module.exports = defineConfig({
-  transpileDependencies: true
-})
+const dotenv = require("dotenv");
+require('dotenv').config();
+dotenv.config({path: './.env'});
+const URL = process.env.URL;
+
+module.exports = {
+  devServer: {
+    proxy: URL
+  }
+}

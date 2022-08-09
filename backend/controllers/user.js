@@ -15,9 +15,10 @@ exports.signup = (req, res, next) => {
     if (err) {
       console.log(err);
       return res.status(400).json({ error: err });
-    }
+    } else {
     console.log("toto");
-    res.status(201).json({ message: "Utilisateur créé" });
+    return res.status(201).json({ message: "Utilisateur créé" });
+    }
   });
 };
 
@@ -49,8 +50,11 @@ exports.login = (req, res, next) => {
         status = "membre";
       }
 
+      let uti_id = results[0].uti_id;
+
       return res.status(200).json({
         status: status,
+        uti_id: uti_id,
       });
     });
   } else {
