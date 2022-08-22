@@ -31,8 +31,7 @@
 
 
 <script>
-import Axios from "axios";
-import proxy from "vue.config.js";
+import {connectedClient} from "../services/api.js";
 
 export default {
     name: "mainProfile",
@@ -48,18 +47,27 @@ export default {
 methods: {
  //Fonction de suppression
     suppr() {
-      const user = {
-        email: this.email,
-        password: this.password,
-      };
-      Axios.delete("proxy/deleteUser", user)
+      const token = JSON.parse(localStorage.groupomaniaUser).token;
+      const uti_id = JSON.parse(localStorage.groupomaniaUser).uti_id;
+      //const status = localstorage.getItem("status");
+      //const user = {
+        //email: this.email,
+        //password: this.password,
+      //};
+      console.log(uti_id);
+      if(confirm('Voulez vous vraiment supprimer le compte ?')){
+      connectedClient.post("user/deleteUser/"+uti_id, {
+        headers: {
+         "Content-Type": 'application/x-www-form-urlencoded',
+         authorization: "Bearer" + token,
+         },
+         })
         .then((res) => {
           if (res.status === 200) {
             console.log(res);
           }
         })
         .catch((err) => {
-          localStorage.clear();
           if (err.response.status === 403) {
             window.alert("Seul le propriétaire du compte peut le supprimer");
           } 
@@ -67,6 +75,7 @@ methods: {
             window.alert("Erreur");
           } 
         });
+      }
     },
   },
 }

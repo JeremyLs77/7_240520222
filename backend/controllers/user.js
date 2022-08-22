@@ -55,10 +55,11 @@ exports.login = (req, res, next) => {
       return res.status(200).json({
         status: status,
         uti_id: uti_id,
+        token,
       });
     });
   } else {
-    return res.status(404).json("user_not_found");
+    return res.status(404).json("utilisateur non trouvé");
   }
 };
 
@@ -77,7 +78,8 @@ exports.deleteUser = (req, res, next) => {
       req.decoded = decoded;
 
       // Vérification s'il s'agit du compte utilisateur
-      console.log(decoded.uti_id);
+      //console.log(decoded.uti_id);
+      console.log(req.body.uti_id);
       if (req.decoded.uti_id != req.body.uti_id) {
         return res.status(403).json({ message: "Seul le propriétaire du compte peut le supprimer" });
       } else {

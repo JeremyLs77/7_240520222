@@ -47,7 +47,8 @@
 </template>
 
 <script>
-import Axios from "axios";
+import auth from "../services/auth.js";
+
 export default {
   name: "mainSignup",
   data() {
@@ -74,10 +75,10 @@ export default {
        window.alert("Votre mot de passe doit contenir au moins 8 caractères et au moins 1 lettre et 1 chiffre");
        location.reload();
       }
-      Axios.post("http://localhost:3000/user/signup", newUser)
+      auth.signup(newUser)
         .then((res) => {
           if (res.status === 201) {
-            Axios.post("http://localhost:3000/user/login", newUser) //login si inscription réussie
+            auth.login(newUser) //login si inscription réussie
               .then((res) => {
                 if (res.status === 200) {
                   localStorage.setItem("userLogin", JSON.stringify(res.data));

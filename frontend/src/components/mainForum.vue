@@ -29,9 +29,22 @@
 </template>
 
 <script>
+//import {connectedClient} from "../services/api.js";
+
 export default {
     name: "mainForum",
 };
+
+//methods: {
+  //getPosts(){
+    //connectedClient.get("/message/getallmessages"),
+    //.then((res => {
+          //console.log(res);
+        //}),
+      //}
+    //},
+  //}
+//}
 </script>
 
 <style lang="scss" scoped>

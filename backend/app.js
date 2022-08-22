@@ -7,10 +7,14 @@ const cookieSession = require("cookie-session");
 const rateLimit = require("express-rate-limit");
 const userRoute = require("./routes/user");
 const messageRoute = require("./routes/message");
+const dotenv = require("dotenv");
+require('dotenv').config();
+dotenv.config({path: './.env'});
 
 // Parametrage des headers
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "process.env.FRONTEND_URL");
+  res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
   next();

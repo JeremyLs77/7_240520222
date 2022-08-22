@@ -40,7 +40,8 @@
 </template>
 
 <script>
-import Axios from "axios";
+//import auth from "../services/auth.js";
+import {notConnectedClient} from "../services/api.js";
 
 export default {
   name: "mainConnect",
@@ -49,26 +50,32 @@ export default {
       email: "",
       password: "",
       error: "",
+      message: "",
     };
   },
   methods: {
     //Fonction de connexion
     login() {
-      const user = {
-        email: this.email,
-        password: this.password,
-      };
-      Axios.post("http://localhost:3000/user/login", user)
+      const email = this.email;
+      const password = this.password;
+       notConnectedClient.post("/user/login", {
+              email,
+              password
+          })
         .then((res) => {
           if (res.status === 200) {
-            localStorage.setItem("userLogin", JSON.stringify(res.data));
-            console.log(res);
-            this.$router.push("/about");
+                const groupomaniaUser = {
+                    token: res.data.token,
+                    uti_id: res.data.uti_id,
+                    status: res.data.status
+                }
+                localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));
+                location.reload();
+          this.$router.push("/about");
           }
         })
         .catch((err) => {
-          localStorage.clear();
-          if (err.response.status === 401) {
+          if (err.res.status === 401) {
             window.alert("Connexion au serveur impossible.");
           } else {
             window.alert("Erreur de connexion, veuillez vérifier vos identifiants");
