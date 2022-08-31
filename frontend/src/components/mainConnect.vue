@@ -67,11 +67,14 @@ export default {
                 const groupomaniaUser = {
                     token: res.data.token,
                     uti_id: res.data.uti_id,
-                    status: res.data.status
+                    status: res.data.status,
+                    prenom: res.data.prenom,
+                    nom: res.data.nom,
+                    email: res.data.email
                 }
                 localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));
-                location.reload();
-          this.$router.push("/about");
+                window.alert("Connexion réussie. Redirection vers l'espace de discussion");
+                this.$router.push("/about");
           }
         })
         .catch((err) => {

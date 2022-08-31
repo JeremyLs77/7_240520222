@@ -16,7 +16,6 @@ exports.signup = (req, res, next) => {
       console.log(err);
       return res.status(400).json({ error: err });
     } else {
-    console.log("toto");
     return res.status(201).json({ message: "Utilisateur créé" });
     }
   });
@@ -51,11 +50,17 @@ exports.login = (req, res, next) => {
       }
 
       let uti_id = results[0].uti_id;
+      let nom = results[0].nom;
+      let prenom = results[0].prenom;
+      let email = results[0].email;
 
       return res.status(200).json({
         status: status,
         uti_id: uti_id,
-        token,
+        nom: nom,
+        prenom: prenom,
+        email: email,
+        token
       });
     });
   } else {
@@ -79,11 +84,11 @@ exports.deleteUser = (req, res, next) => {
 
       // Vérification s'il s'agit du compte utilisateur
       //console.log(decoded.uti_id);
-      console.log(req.body.uti_id);
-      if (req.decoded.uti_id != req.body.uti_id) {
+      console.log(req.params.id);
+      if (req.decoded.uti_id != req.params.id) {
         return res.status(403).json({ message: "Seul le propriétaire du compte peut le supprimer" });
       } else {
-        db.query("DELETE FROM uti WHERE uti_id= ?", req.body.uti_id, (error, result, field) => {
+        db.query("DELETE FROM uti WHERE uti_id= ?", req.params.id, (error, result, field) => {
           if (error) {
             console.log(error);
             return res.status(400).json(error);

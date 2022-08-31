@@ -5,11 +5,14 @@ dotenv.config({ path: "./.env" });
 
 // Afficher les posts
 exports.getallMessages = (req, res, next) => {
-  db.query('SELECT * FROM post', (error, result) => {
+  db.query('SELECT * FROM post', (error, results) => {
       if (error) {
           return res.status(400).json({ error: "Erreur lors de l'affichage des posts" });
       }
-      return res.status(200).json(result);
+      let posts = results;
+      return res.status(200).json({
+        posts
+      })
   });
 };
 
@@ -20,7 +23,8 @@ exports.createMessage = (req, res, next) => {
     titre: req.body.titre,
     image: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null,
     topic_id: req.body.topic_id,
-    id_1: req.body.id_1
+    id_1: req.body.id_1,
+    auteur: req.body.auteur,
   })
   console.log(req.body);
   let sql = "INSERT INTO post SET ?";
@@ -29,7 +33,6 @@ exports.createMessage = (req, res, next) => {
       console.log(err);
       return res.status(400).json("erreur");
     } 
-      console.log("toto");
       return res.status(201).json({ message: "Votre post a bien été crée" });
     }
     )};

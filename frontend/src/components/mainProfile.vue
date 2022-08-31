@@ -1,32 +1,25 @@
 <template>
+  <div class ="profil">
     <h1>Profil</h1>
 
-    <p>Numéro d'identifiant utilisateur:</p>
+    <p>Numéro d'identifiant utilisateur: {{this.uti_id}}</p>
 
-    <div class="form-row">
-      <input
-        v-model="email"
-        class="form-row__input"
-        
-        type="email"
-        required
-        @keyup.enter="login"
-        placeholder="Adresse mail"
-      />
-    </div>
-    <div class="form-row">
-        <input
-       v-model="password"
-        type="password"
-        required
-        @keyup.enter="login"
-        class="form-row__input"
-        placeholder="Mot de passe"
-      />
-    </div>
+    <p>Adresse e-mail: {{this.email}}</p>
+
+    <p>Nom : {{this.nom}}</p>
+
+    <p>Prenom : {{this.prenom}}</p>
+
+    <p>Statut utilisateur : {{this.status}}</p>
+
     <button @keyup.enter="suppr" type="submit" @click="suppr" class="btndelete">
     Supprimer mon compte
     </button>
+  </div>
+
+  <div class="modifyprofil">
+    <p>Fonctionnalité de mise a jour des informations utilisateurs disponible dans une prochaine version de l'application.</p>
+  </div>
 </template>
 
 
@@ -40,9 +33,20 @@ export default {
         email: "",
         password: "",
         error: "",
+        nom :"",
+        prenom: "",
         }
     },
 
+mounted() {
+  if (localStorage.groupomaniaUser) {
+    this.uti_id = JSON.parse(localStorage.groupomaniaUser).uti_id;
+    this.email = JSON.parse(localStorage.groupomaniaUser).email;
+    this.nom = JSON.parse(localStorage.groupomaniaUser).nom;
+    this.prenom = JSON.parse(localStorage.groupomaniaUser).prenom;
+    this.status = JSON.parse(localStorage.groupomaniaUser).status;
+    }
+},
 
 methods: {
  //Fonction de suppression
@@ -64,7 +68,8 @@ methods: {
          })
         .then((res) => {
           if (res.status === 200) {
-            console.log(res);
+            window.alert("Le compte utilisateur a bien été supprimé. Redirection vers l'écran de connexion.")
+            this.$router.push("/");
           }
         })
         .catch((err) => {

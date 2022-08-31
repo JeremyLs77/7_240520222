@@ -37,6 +37,34 @@
         @keyup.enter="signup"
       />
     </div>
+    <label align="center" for="nom">Nom</label>
+    <div class="form-row">
+      <input
+       
+        class="form-row__input"
+        v-model="nom"
+        type="nom"
+        maxlength="16"
+        
+        required
+        placeholder="Entrez votre nom"
+        @keyup.enter="signup"
+      />
+    </div>
+    <label align="center" for="nom">Prenom</label>
+    <div class="form-row">
+      <input
+       
+        class="form-row__input"
+        v-model="prenom"
+        type="prenom"
+        maxlength="16"
+        
+        required
+        placeholder="Entrez votre prenom"
+        @keyup.enter="signup"
+      />
+    </div>
 
     <div class="form-row">
       <button @keyup.enter="signup" type="submit" @click="signup" class="btnlogin">
@@ -47,7 +75,7 @@
 </template>
 
 <script>
-import auth from "../services/auth.js";
+import {notConnectedClient} from "../services/api.js";
 
 export default {
   name: "mainSignup",
@@ -55,6 +83,8 @@ export default {
     return {
       email: "",
       password: "",
+      nom: "",
+      prenom: "",
       show: true,
       error: "",
       emailRegex:/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -64,10 +94,10 @@ export default {
   methods: {
     //Fonction d'inscription
     signup() {
-      let newUser = {
-        email: this.email,
-        password: this.password,
-      };
+      const email = this.email;
+      const password = this.password;
+      const nom = this.nom;
+      const prenom = this.prenom;
       if (!this.emailRegex.test(this.email)) {
         window.alert("Vous devez renseigner une adresse email valide");
         location.reload();
@@ -75,13 +105,28 @@ export default {
        window.alert("Votre mot de passe doit contenir au moins 8 caractères et au moins 1 lettre et 1 chiffre");
        location.reload();
       }
-      auth.signup(newUser)
+      notConnectedClient.post("/user/signup", {
+              email,
+              password,
+              nom,
+              prenom
+          })
         .then((res) => {
           if (res.status === 201) {
-            auth.login(newUser) //login si inscription réussie
+            notConnectedClient.post("/user/login", {
+              email,
+              password
+          }) //login en cas d'inscription réussie
               .then((res) => {
                 if (res.status === 200) {
-                  localStorage.setItem("userLogin", JSON.stringify(res.data));
+                const groupomaniaUser = {
+                    token: res.data.token,
+                    uti_id: res.data.uti_id,
+                    status: res.data.status,
+                    prenom: res.data.prenom,
+                    nom: res.data.nom
+                }
+                localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));
                   this.$router.push("/about");
                 }
               })
@@ -97,6 +142,10 @@ export default {
 </script>
 
 <style scoped>
+
+.card {
+margin-bottom: 7rem;
+}
 .form-row {
   display: flex;
   margin: 16px 0px;
@@ -109,9 +158,8 @@ export default {
   border-radius: 8px;
   background: #f2f2f2;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 15px;
   flex: 1;
-  min-width: 100px;
   color: black;
 }
 .form-row__input::placeholder {

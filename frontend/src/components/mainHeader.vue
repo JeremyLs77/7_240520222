@@ -6,7 +6,7 @@
         <div class="header__navigation">
                 <router-link to="/" class="header__navitems">Accueil</router-link>
                 <router-link to="/profile" class="header__navitems">Profil</router-link>
-                <a to="/login" class="header__navitems" v-on:click="Logout()">Déconnexion</a>
+                <button class="logout" @click="Logout()">Déconnexion</button>
         </div>
     </div>
 </template>
@@ -14,6 +14,19 @@
 <script>
 export default {
     name: "mainHeader",
+
+
+methods: {
+    Logout() {
+        if (localStorage.groupomaniaUser == undefined) {
+            window.alert("Vous n'etes pas connecté.");
+        } else {
+            localStorage.clear();
+            window.alert("Déconnexion réussie. Redirection vers l'espace d'authentification.");
+            this.$router.push("/");
+        }
+        }
+    },
 };
 </script>
 
@@ -29,6 +42,10 @@ export default {
         max-width: 40%;
         max-height: 33%;
     }
+}
+
+.logout{
+    margin-left : 5px;
 }
 
 .header__navitems{
