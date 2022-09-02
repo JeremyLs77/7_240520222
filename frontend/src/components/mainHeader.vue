@@ -6,6 +6,7 @@
         <div class="header__navigation">
                 <router-link to="/" class="header__navitems">Accueil</router-link>
                 <router-link to="/profile" class="header__navitems">Profil</router-link>
+                <router-link to="/about" class="header__navitems">Forum</router-link>
                 <button class="logout" @click="Logout()">Déconnexion</button>
         </div>
     </div>

@@ -1,6 +1,7 @@
 const db = require("../mysqlconfig");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
+//const base64ImageToFile = require('base64image-to-file');
 
 
 // Afficher les posts
@@ -18,11 +19,12 @@ exports.getallMessages = (req, res, next) => {
 
 // Création d'un post //
 exports.createMessage = (req, res, next) => {
+  const date = new Date();
+  const currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + "-" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
   const post = ({
     texte: req.body.texte,
     titre: req.body.titre,
-    image: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null,
-    topic_id: req.body.topic_id,
+    date_creation: currentDate,
     id_1: req.body.id_1,
     auteur: req.body.auteur,
   })
@@ -34,8 +36,8 @@ exports.createMessage = (req, res, next) => {
       return res.status(400).json("erreur");
     } 
       return res.status(201).json({ message: "Votre post a bien été crée" });
-    }
-    )};
+    })
+  },
     
 // Suppression d'un post
 exports.deleteMessage = (req, res, next) => {

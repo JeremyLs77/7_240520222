@@ -39,13 +39,17 @@ export default {
     },
 
 mounted() {
-  if (localStorage.groupomaniaUser) {
+  if (localStorage.groupomaniaUser == undefined) {
+    window.alert("Veuillez vous authentifier pour accéder a la page Profil");
+    this.$router.push("/");
+  } else {
     this.uti_id = JSON.parse(localStorage.groupomaniaUser).uti_id;
     this.email = JSON.parse(localStorage.groupomaniaUser).email;
     this.nom = JSON.parse(localStorage.groupomaniaUser).nom;
     this.prenom = JSON.parse(localStorage.groupomaniaUser).prenom;
     this.status = JSON.parse(localStorage.groupomaniaUser).status;
     }
+  
 },
 
 methods: {

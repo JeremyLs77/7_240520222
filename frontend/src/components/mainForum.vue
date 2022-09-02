@@ -15,7 +15,7 @@
           type="file"
           id="image"
           name="image"
-          accept="image/png, image/jpeg"
+          accept="image/png, image/jpeg, image/gif"
           />
       </div>
       <button @keyup.enter="createPost" type="submit" @click="createPost" class="btndelete">Publier</button>
@@ -27,15 +27,16 @@
   <div class="posts-container">
     <div v-for="post in posts" :key="post.post_id" class="post-card">
       <div class="publication-content">
-        <div v-for="object in post" :key="object.id" class="publication">{{ object.titre }} {{ object.texte }}
-          <p class="postdesc"> Publié par {{object.auteur}} le </p>
+        <div v-for="object in post" :key="object.id" class="publication-single">
+          <div class="postimage"> {{ object.image }} </div>
+          <p class="posttitre"> {{ object.titre }} </p>
+          <p class="posttexte"> {{ object.texte }} </p>
+          <p class="postdesc"> Publié par {{object.auteur}} le {{object.date_creation}} </p>
+          <button v-if="this.status = 'admin'" class="btndelete" @click="deletePost(object.post_id)">Supprimer post_id : {{object.post_id}}</button>
         </div>
       </div>
     </div>
   </div>
-  //<button-group  v-show="ShowDropdown">
-    //<b-dropdown-item v-if="admin">Supprimer</b-dropdown-item>
-  //</button-group>
 </template>
 
 <script>
@@ -49,11 +50,15 @@ export default {
       posts: [],
       postText: "",
       postTitre: "",
+      post_id: "",
+      image: "",
       nom: "",
       prenom: "",
       email: "",
       uti_id: "",
       auteur: "",
+      gifFile: "",
+      status: "",
     };
   },
 
@@ -66,7 +71,10 @@ export default {
 
     if (localStorage.groupomaniaUser) {
     this.auteur = JSON.parse(localStorage.groupomaniaUser).prenom;
+    this.status = JSON.parse(localStorage.groupomaniaUser).status;
+    console.log(this.status);
     }
+
 },
 
   methods: {
@@ -84,20 +92,43 @@ export default {
       .then((res) => {
         if (res.status === 201) {
           console.log(res);
+          window.alert("Publication ajoutée.");
+          location.reload;
         }
       })
       .catch((err) => {
         if (err.response.status === 400) {
           console.log("Erreur");
+          window.alert("Erreur. La publication n'a pas pu être ajoutée. ");
         }
       });
   },
+
+    deletePost() {
+      let token = JSON.parse(localStorage.groupomaniaUser).token;
+      connectedClient.delete("message/deleteMessage/", {
+        headers: {
+         "Content-Type": 'application/x-www-form-urlencoded',
+        authorization: "Bearer" + token,
+         },
+        })
+      .then((res) => {
+        if (res.status === 200) {
+          window.alert("Le post a bien été supprimé.")
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          window.alert("Erreur");
+        }
+      })  
+    },
 
     connectedUser() {
       // Vérification que l'utilisateur est bien connecté
       if (localStorage.groupomaniaUser == undefined) {
         this.approuvedConnexion = false;
-        console.log("Utilisateur non connecté !");
+        window.alert("Veuillez vous authentifier pour accéder à l'espace de discussion.");
         this.$router.push("/");
       } else {
         this.approuvedConnexion = true;
@@ -117,12 +148,6 @@ export default {
 
 };
 
-    //toggleDropdownButton() {
-      //if (this.admin === true) {
-        //this.ShowDropdown = !this.ShowDropdown;
-      //}
-    //},
-
 </script>
 
 <style lang="scss" scoped>
@@ -138,27 +163,37 @@ h1 {
 }
 
 .posts-container {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-bottom: 6rem;
 }
 
 .post-card {
-  position: relative;
-  width: 50%;
+  width: 60%;
   background: white;
   margin: 1rem 0;
-  border-radius: 6px;
+  border: 6px solid red;
 }
 
 .publication{
 margin: 1rem 1rem 1rem 1rem;
 }
 
+.publication-single{
+margin: 8px 8px 8px 8px;
+border: 1px solid black;
+border-radius: 1rem;
+}
+
 .postdesc{
 font-size: 0.7em;
+}
+
+.posttitre{
+font-size: 1.2em;
+font-weight: bold;
 }
 
 .btndelete{
