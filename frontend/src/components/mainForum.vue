@@ -11,7 +11,7 @@
       </div>
       <div class="form__input">
         <input
-          @change="upload2"
+          @change="onFileChange"
           type="file"
           id="image"
           name="image"
@@ -28,11 +28,11 @@
     <div v-for="post in posts" :key="post.post_id" class="post-card">
       <div class="publication-content">
         <div v-for="object in post" :key="object.id" class="publication-single">
-          <div class="postimage"> {{ object.image }} </div>
+          <img :src="'http://localhost:3000/tmp/' + object.image " alt="image">
           <p class="posttitre"> {{ object.titre }} </p>
           <p class="posttexte"> {{ object.texte }} </p>
           <p class="postdesc"> Publié par {{object.auteur}} le {{object.date_creation}} </p>
-          <button v-if="this.status = 'admin'" class="btndelete" @click="deletePost(object.post_id)">Supprimer post_id : {{object.post_id}}</button>
+          <button v-if="admin" class="btndelete" @click="deletePost(object.post_id)">Supprimer post_id : {{object.post_id}}</button>
         </div>
       </div>
     </div>
@@ -59,6 +59,7 @@ export default {
       auteur: "",
       gifFile: "",
       status: "",
+      admin: "",
     };
   },
 
@@ -75,15 +76,20 @@ export default {
     console.log(this.status);
     }
 
+    if (this.status == "admin") {
+      this.admin="true";
+      }
+
 },
 
   methods: {
   createPost() {
-    console.log(this.postText);
+    console.log(this.gifFile);
     let formData = new FormData();
     formData.append("texte", this.postText);
     formData.append("titre", this.postTitre);
     formData.append("auteur", this.auteur);
+    formData.append("image", this.gifFile);
       connectedClient.post("message/create", formData, {
         headers: {
          "Content-Type": 'multipart/form-data',
@@ -104,9 +110,9 @@ export default {
       });
   },
 
-    deletePost() {
+    deletePost(post_id) {
       let token = JSON.parse(localStorage.groupomaniaUser).token;
-      connectedClient.delete("message/deleteMessage/", {
+      connectedClient.post("message/deleteMessage/"+post_id, {
         headers: {
          "Content-Type": 'application/x-www-form-urlencoded',
         authorization: "Bearer" + token,
@@ -115,6 +121,7 @@ export default {
       .then((res) => {
         if (res.status === 200) {
           window.alert("Le post a bien été supprimé.")
+          location.reload;
         }
       })
       .catch((err) => {
@@ -122,6 +129,18 @@ export default {
           window.alert("Erreur");
         }
       })  
+    },
+
+    onFileChange: function(e) {
+      const files = e.target.files || e.dataTransfer.files;
+      if (files.length === 0) {
+        return;
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+      reader.onload = () => {
+        this.gifFile = reader.result
+      }
     },
 
     connectedUser() {

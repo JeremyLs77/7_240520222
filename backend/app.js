@@ -13,7 +13,7 @@ dotenv.config({path: './.env'});
 
 // Parametrage des headers
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "process.env.FRONTEND_URL");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({limit : "50mb"}))
 
 app.use(express.json());
+app.use('/tmp', express.static(path.join(__dirname, 'tmp')));
 
 // Gestion des cookies
 app.use(
@@ -49,7 +50,14 @@ app.use('/user', userRoute);
 app.use('/message', messageRoute);
 
 // Sécurisation des headers HTTP
-app.use(helmet());
+app.use(helmet({
+  crossOriginEmbedderPolicy: false,
+}));
+
+app.use(function (req, res, next) {
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-site')
+  next()
+})
 
 // Exports
 module.exports = app;

@@ -1,7 +1,7 @@
 const db = require("../mysqlconfig");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
-//const base64ImageToFile = require('base64image-to-file');
+const base64ImageToFile = require('base64image-to-file');
 
 
 // Afficher les posts
@@ -19,14 +19,22 @@ exports.getallMessages = (req, res, next) => {
 
 // Création d'un post //
 exports.createMessage = (req, res, next) => {
+  const base64Image = req.body.image;
   const date = new Date();
   const currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + "-" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
+  const auteur = req.body.auteur;
+  const fileName = auteur + "-" + currentDate;
+  base64ImageToFile(base64Image, 'tmp/', fileName, function(err) {
+    if(err) {
+      return console.error(err);
+    }
   const post = ({
     texte: req.body.texte,
     titre: req.body.titre,
     date_creation: currentDate,
     id_1: req.body.id_1,
     auteur: req.body.auteur,
+    image: fileName + '.gif',
   })
   console.log(req.body);
   let sql = "INSERT INTO post SET ?";
@@ -37,11 +45,12 @@ exports.createMessage = (req, res, next) => {
     } 
       return res.status(201).json({ message: "Votre post a bien été crée" });
     })
+  });
   },
     
 // Suppression d'un post
 exports.deleteMessage = (req, res, next) => {
-  db.query('DELETE FROM post WHERE post_id= ?', req.body.post_id, (error, result, field) => {
+  db.query('DELETE FROM post WHERE post_id= ?', req.params.id, (error, result, field) => {
   
     if (error) {
       console.log(error);

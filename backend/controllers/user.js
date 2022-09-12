@@ -1,5 +1,4 @@
 // Imports
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../mysqlconfig");
 const dotenv = require("dotenv");
