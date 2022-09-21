@@ -28,7 +28,7 @@
     <div v-for="post in posts" :key="post.post_id" class="post-card">
       <div class="publication-content">
         <div v-for="object in post" :key="object.id" class="publication-single">
-          <img :src="'http://localhost:3000/tmp/' + object.image " alt="image">
+          <img class="postimg" :src="'http://localhost:3000/tmp/' + object.image " alt="image">
           <p class="posttitre"> {{ object.titre }} </p>
           <p class="posttexte"> {{ object.texte }} </p>
           <p class="postdesc"> Publié par {{object.auteur}} le {{object.date_creation}} </p>
@@ -213,6 +213,12 @@ font-size: 0.7em;
 .posttitre{
 font-size: 1.2em;
 font-weight: bold;
+}
+
+.postimg{
+max-height: 16rem;
+max-width: 40%;
+margin: 0.3rem 0.3rem 0.3rem 0.3rem;
 }
 
 .btndelete{
