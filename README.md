@@ -5,8 +5,6 @@ Formation développeur web*
 
 Prérequis :
 
--Git : https://git-scm.com/downloads
-
 -Node.js : https://nodejs.org/en/
 
 -MySql : https://dev.mysql.com/downloads/installer/
