@@ -18,12 +18,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .welcome{
     margin-bottom: 4rem;
     &__wrapper{
     display: flex;
     align-items: center;
     font-size: 1.2em;
+    font-family: "Roboto-Regular";
     }
 }
 

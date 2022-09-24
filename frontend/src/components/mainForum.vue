@@ -1,8 +1,8 @@
 <template>
-  <h1>Forum</h1>
 
   <div class="form">
     <form>
+      <h1>Forum</h1>
       <div class="form-group">
         <input type="text" class="postTitre" v-model="postTitre" id="text" aria-describedby="emailHelp" placeholder="Titre" />
       </div>
@@ -29,9 +29,11 @@
       <div class="publication-content">
         <div v-for="object in post" :key="object.id" class="publication-single">
           <img class="postimg" :src="'http://localhost:3000/tmp/' + object.image " alt="image">
-          <p class="posttitre"> {{ object.titre }} </p>
-          <p class="posttexte"> {{ object.texte }} </p>
-          <p class="postdesc"> Publié par {{object.auteur}} le {{object.date_creation}} </p>
+          <div class="publication-singletexts">
+            <p class="posttitre"> {{ object.titre }} </p>
+            <p class="posttexte"> {{ object.texte }} </p>
+            <p class="postdesc"> Publié par {{object.auteur}} le {{object.date_creation}} </p>
+          </div>
           <button v-if="admin" class="btndelete" @click="deletePost(object.post_id)">Supprimer post_id : {{object.post_id}}</button>
         </div>
       </div>
@@ -171,17 +173,14 @@ export default {
 
 <style lang="scss" scoped>
 .form {
+  font-family: "Roboto-Regular";
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-h1 {
-  display: flex;
-  justify-content: center;
-}
-
 .posts-container {
+  font-family: "Roboto-Regular";
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -204,6 +203,7 @@ margin: 1rem 1rem 1rem 1rem;
 margin: 8px 8px 8px 8px;
 border: 1px solid black;
 border-radius: 1rem;
+display: flex;
 }
 
 .postdesc{
@@ -234,5 +234,19 @@ margin: 0.3rem 0.3rem 0.3rem 0.3rem;
     margin-top : 0.5rem;
     box-shadow: 2px 2px 5px -3px rgba(0,0,0,0.7);
     cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+  .post-card{
+  width: 90%;
+  }
+  
+  .publication-single{
+    display: block;
+  }
+
+  .postimg{
+    max-width: 97%;
+  }
 }
 </style>

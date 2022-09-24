@@ -11,6 +11,12 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: "Roboto-Regular";
+  src: local("Roboto-Regular"),
+  url(./fonts/Roboto-Regular.ttf) format("truetype");
+}
+
 nav {
   padding: 30px;
 
