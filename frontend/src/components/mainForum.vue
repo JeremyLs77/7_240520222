@@ -106,9 +106,12 @@ export default {
       })
       .catch((err) => {
         if (err.response.status === 400) {
+          window.alert("Erreur. Veuillez renseigner tous les champs.");
+          location.reload();
+        } else if (err.response.status === 401) {
           console.log("Erreur");
-          window.alert("Erreur. La publication n'a pas pu être ajoutée. ");
-        }
+          window.alert("Veuillez entrer un format titre et texte valide (4 caractères minimum)");
+          }
       });
   },
 

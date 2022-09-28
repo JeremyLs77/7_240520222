@@ -1,22 +1,41 @@
 // Imports
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../mysqlconfig");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
 const SECRET_KEY = process.env.JWT_KEY;
 
+const regexEmail =
+  /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
+const regexPassword = /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/;
+
 // Fonction signup
 exports.signup = (req, res, next) => {
-  const uti = [[req.body.nom, req.body.prenom, req.body.email, req.body.password]];
-  console.log(req.body);
-  let sql = "INSERT INTO uti (nom, prenom, email, password) VALUES ?";
-  db.query(sql, [uti], function (err, result) {
-    if (err) {
-      console.log(err);
-      return res.status(400).json({ error: err });
-    } else {
-    return res.status(201).json({ message: "Utilisateur créé" });
-    }
+  if (!req.body.email || !req.body.password || !req.body.nom || !req.body.prenom) {
+    return res.status(400).json({
+      message: "Informations manquantes",
+    });
+  } else if (!regexEmail.test(req.body.email) || !regexPassword.test(req.body.password)) {
+    return res.status(401).json({
+      message: "Mauvaise requete",
+    });
+  }
+  bcrypt.hash(req.body.password, 10).then((hash) => {
+    let uti = {
+      nom: req.body.nom,
+      prenom: req.body.prenom,
+      email: req.body.email,
+      password: hash,
+    };
+    console.log(req.body);
+    db.query(`INSERT INTO uti SET ?`, uti, (err, result, field) => {
+      if (err) {
+        console.log(err);
+        return res.status(401).json({ error: err });
+      }
+      return res.status(201).json({ message: "Utilisateur créé" });
+    });
   });
 };
 
@@ -25,45 +44,62 @@ exports.login = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   console.log(req.body.password);
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).json({
+      message: "Informations manquantes",
+    });
+  } else if (!regexEmail.test(req.body.email) || !regexPassword.test(req.body.password)) {
+    return res.status(401).json({
+      message: "Mauvaise requete",
+    });
+  }
   if (email && password) {
     db.query("SELECT * FROM uti WHERE email= ?", email, (error, results, _fields) => {
-      const expireIn = 24 * 60 * 60;
-      const token = jwt.sign(
-        {
-          uti_id: results[0].uti_id,
-          isadmin: results[0].isadmin,
-        },
-        SECRET_KEY,
-        {
-          expiresIn: expireIn,
-        }
-      );
+      if (results.length > 0) {
+        bcrypt.compare(password, results[0].password).then((valid) => {
+          if (!valid) {
+            res.status(401).json({ message: "Utilisateur ou mot de passe inconnu" });
+          } else {
+            const expireIn = 24 * 60 * 60;
+            const token = jwt.sign(
+              {
+                uti_id: results[0].uti_id,
+                isadmin: results[0].isadmin,
+              },
+              SECRET_KEY,
+              {
+                expiresIn: expireIn,
+              }
+            );
 
-      res.header("Authorization", "Bearer " + token);
+            res.header("Authorization", "Bearer " + token);
 
-      let status = "";
-      if (results[0].isadmin === 1) {
-        status = "admin";
+            let status = "";
+            if (results[0].isadmin === 1) {
+              status = "admin";
+            } else {
+              status = "membre";
+            }
+
+            let uti_id = results[0].uti_id;
+            let nom = results[0].nom;
+            let prenom = results[0].prenom;
+            let email = results[0].email;
+
+            return res.status(200).json({
+              status: status,
+              uti_id: uti_id,
+              nom: nom,
+              prenom: prenom,
+              email: email,
+              token,
+            });
+          }
+        });
       } else {
-        status = "membre";
+        return res.status(404).json("utilisateur non trouvé");
       }
-
-      let uti_id = results[0].uti_id;
-      let nom = results[0].nom;
-      let prenom = results[0].prenom;
-      let email = results[0].email;
-
-      return res.status(200).json({
-        status: status,
-        uti_id: uti_id,
-        nom: nom,
-        prenom: prenom,
-        email: email,
-        token
-      });
     });
-  } else {
-    return res.status(404).json("utilisateur non trouvé");
   }
 };
 
@@ -108,9 +144,6 @@ exports.updateUser = (req, res, next) => {
   const email = req.body.email;
   const id = req.body.uti_id;
   console.log(req.body);
-  //let passwords = req.body.password;
-  //bcrypt.hash(passwords, 10).then((hash) => {
-  //passwords = hash;
   db.query(
     `UPDATE uti SET nom='${lastname}', prenom='${firstname}', password='${password}', email= '${email}' WHERE uti_id=${id}`,
     (error, results, fields) => {

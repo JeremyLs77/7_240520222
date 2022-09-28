@@ -40,7 +40,6 @@
 </template>
 
 <script>
-//import auth from "../services/auth.js";
 import {notConnectedClient} from "../services/api.js";
 
 export default {
@@ -78,11 +77,13 @@ export default {
           }
         })
         .catch((err) => {
-          if (err.res.status === 401) {
-            window.alert("Connexion au serveur impossible.");
-          } else {
-            window.alert("Erreur de connexion, veuillez vérifier vos identifiants");
-          }
+          if (err.response.status === 400) {
+            window.alert("Vous devez renseigner tous les champs");
+            location.reload();
+          } else if (err.response.status === 401) {
+            window.alert("Veuillez entrer un format e-mail et/ou mot de passe valide");
+            location.reload();
+            }
         });
     },
   },

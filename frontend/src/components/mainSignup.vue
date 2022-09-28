@@ -98,13 +98,13 @@ export default {
       const password = this.password;
       const nom = this.nom;
       const prenom = this.prenom;
-      if (!this.emailRegex.test(this.email)) {
-        window.alert("Vous devez renseigner une adresse email valide");
-        location.reload();
-      } else if (!this.passwordRegex.test(this.password)) {
-       window.alert("Votre mot de passe doit contenir au moins 8 caractères et au moins 1 lettre et 1 chiffre");
-       location.reload();
-      }
+      //if (!this.emailRegex.test(this.email)) {
+        //window.alert("Vous devez renseigner une adresse email valide");
+        //location.reload();
+      //} else if (!this.passwordRegex.test(this.password)) {
+      // window.alert("Votre mot de passe doit contenir au moins 8 caractères et au moins 1 lettre et 1 chiffre");
+       //location.reload();
+      //}
       notConnectedClient.post("/user/signup", {
               email,
               password,
@@ -121,12 +121,14 @@ export default {
                 if (res.status === 200) {
                 const groupomaniaUser = {
                     token: res.data.token,
+                    email: res.data.email,
                     uti_id: res.data.uti_id,
                     status: res.data.status,
                     prenom: res.data.prenom,
                     nom: res.data.nom
                 }
                 localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));
+                  window.alert("Compte utilisateur crée. Redirection vers la page forum");
                   this.$router.push("/about");
                 }
               })
@@ -136,6 +138,16 @@ export default {
               });
           }
         })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            window.alert("Vous devez renseigner tous les champs");
+            location.reload();
+          }
+          if (err.response.status === 401) {
+            window.alert("Veuillez entrer un format e-mail et/ou mot de passe valide (le mdp doit contenir au moins 8 caractères et au moins 1 lettre et 1 chiffre");
+            location.reload();
+            }
+        });
     },
   },
 };

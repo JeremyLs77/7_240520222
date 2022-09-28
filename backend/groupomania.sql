@@ -60,7 +60,7 @@ CREATE TABLE `post` (
   PRIMARY KEY (`post_id`),
   KEY `topic_id` (`topic_id`),
   KEY `id_1` (`id_1`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
-INSERT INTO `post` VALUES (24,'Bonjour à tous ! Ravi de pouvoir participer au nouvel espace de discussion','Premier post','Henry-2022-8-21-15-3-42.gif','2022-08-21 15:03:42',NULL,NULL,NULL,'Henry'),(25,'merci a la direction qui à décidé de mettre en place cet espace, qui va je l\'espère améliorer les relations internes','Une initiative appréciée','Jean-2022-8-21-15-19-16.gif','2022-08-21 15:19:16',NULL,NULL,NULL,'Jean'),(26,'Salut à tous ! Je suis heureuse de découvrir ce forum de discussion, très bonne idée qui je l\'espère va améliorer les relations internes','Salutations','Roselyne-2022-8-21-15-42-53.gif','2022-08-21 15:42:53',NULL,NULL,NULL,'Roselyne');
+INSERT INTO `post` VALUES (25,'merci a la direction qui à décidé de mettre en place cet espace, qui va je l\'espère améliorer les relations internes','Une initiative appréciée','Jean-2022-8-21-15-19-16.gif','2022-08-21 15:19:16',NULL,NULL,NULL,'Jean'),(26,'Salut à tous ! Je suis heureuse de découvrir ce forum de discussion, très bonne idée qui je l\'espère va améliorer les relations internes','Salutations','Roselyne-2022-8-21-15-42-53.gif','2022-08-21 15:42:53',NULL,NULL,NULL,'Roselyne');
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,11 +110,11 @@ CREATE TABLE `uti` (
   `uti_id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) DEFAULT NULL,
   `prenom` varchar(50) DEFAULT NULL,
-  `password` varchar(15) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `isadmin` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`uti_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +123,7 @@ CREATE TABLE `uti` (
 
 LOCK TABLES `uti` WRITE;
 /*!40000 ALTER TABLE `uti` DISABLE KEYS */;
-INSERT INTO `uti` VALUES (15,'nom','prenom',NULL,NULL,1),(16,'test5','test5',NULL,NULL,1),(29,NULL,NULL,NULL,NULL,0),(30,NULL,NULL,NULL,NULL,0),(31,'testmodif2','testmodif2','testmodifpass2',NULL,0),(32,NULL,NULL,NULL,NULL,0),(34,NULL,NULL,NULL,NULL,0),(35,'test123','test345','test147',NULL,0),(37,'test51','test52','testpass53',NULL,0),(38,'test51','test52','testpass53',NULL,0),(39,'test60','test60','testpass65',NULL,0),(40,'test62','test62','testpass67',NULL,0),(41,'test62','test62','testpass67',NULL,0),(42,'test64','test64','testpass68',NULL,0),(43,'test65','test65','testpass69',NULL,0),(44,'test66','test66','testpass70',NULL,0),(45,'test67','test67','testpass71',NULL,0),(46,'test69','test69','testpass73',NULL,0),(48,'test71','test71','testpass75','testemail4',0),(49,'test72','test72','testpass76','testemail5',0),(51,'test73','test73','testpass77','testemail6',0),(52,'test74','test74','testpass78','testemail7',0),(53,'test74','test74','testpass78','testemail7',0),(55,'test76','test76','testpass80','testemail9',0),(56,'test768','test768','testpass801','testemail901',0),(57,'test768','test768','testpass805','testemail905',1),(58,'admin','admin','admin101','admin@groupomania.fr',1),(63,NULL,NULL,'testpass789','tessa@hotmail.fr',0),(64,NULL,NULL,'test','tes',0),(65,NULL,NULL,'te','ter14',0),(67,NULL,NULL,'testpass555','henritest@gmail.com',0),(68,NULL,NULL,'testpass10','guillaumetest@gmail.com',0),(69,NULL,NULL,'testpass55','test@gmail.com',0),(71,NULL,NULL,NULL,NULL,0),(72,'Piou','Jean','testpass789','jeanmi@gmail.com',0),(73,'Garin','Henry','testpass369','henry4@gmail.com',0),(74,'Thierry','Bizotier','gargamel21','Thierry1990@hotmail.fr',0),(75,'Perot','Roselyne','loc5698tes','roselyne58@gmail.com',0);
+INSERT INTO `uti` VALUES (15,'nom','prenom',NULL,NULL,1),(16,'test5','test5',NULL,NULL,1),(29,NULL,NULL,NULL,NULL,0),(30,NULL,NULL,NULL,NULL,0),(31,'testmodif2','testmodif2','testmodifpass2',NULL,0),(32,NULL,NULL,NULL,NULL,0),(34,NULL,NULL,NULL,NULL,0),(35,'test123','test345','test147',NULL,0),(37,'test51','test52','testpass53',NULL,0),(38,'test51','test52','testpass53',NULL,0),(39,'test60','test60','testpass65',NULL,0),(40,'test62','test62','testpass67',NULL,0),(41,'test62','test62','testpass67',NULL,0),(42,'test64','test64','testpass68',NULL,0),(43,'test65','test65','testpass69',NULL,0),(44,'test66','test66','testpass70',NULL,0),(45,'test67','test67','testpass71',NULL,0),(46,'test69','test69','testpass73',NULL,0),(48,'test71','test71','testpass75','testemail4',0),(49,'test72','test72','testpass76','testemail5',0),(51,'test73','test73','testpass77','testemail6',0),(52,'test74','test74','testpass78','testemail7',0),(53,'test74','test74','testpass78','testemail7',0),(55,'test76','test76','testpass80','testemail9',0),(56,'test768','test768','testpass801','testemail901',0),(57,'test768','test768','testpass805','testemail905',1),(58,'admin','admin','admin101','admin@groupomania.fr',1),(63,NULL,NULL,'testpass789','tessa@hotmail.fr',0),(64,NULL,NULL,'test','tes',0),(65,NULL,NULL,'te','ter14',0),(67,NULL,NULL,'testpass555','henritest@gmail.com',0),(68,NULL,NULL,'testpass10','guillaumetest@gmail.com',0),(69,NULL,NULL,'testpass55','test@gmail.com',0),(71,NULL,NULL,NULL,NULL,0),(72,'Piou','Jean','testpass789','jeanmi@gmail.com',0),(73,'Garin','Henry','testpass369','henry4@gmail.com',0),(74,'Thierry','Bizotier','gargamel21','Thierry1990@hotmail.fr',0),(75,'Perot','Roselyne','loc5698tes','roselyne58@gmail.com',0),(77,'Martin','Jerome','testpass14789','Jerome@gmail.com',0),(78,'Herbert','Jean','testpass123456','Jean12@gmail.com',0),(80,'Beckham','David','$2b$10$YdrMwAEh9W0HM4NA0Dwf4.z8jvestZcYNxTx2AhJmah.xxpoIhGrG','Davidbeck78@gmail.com',0),(81,'Beckham','David','$2b$10$IC3nBRnndfRqNjx/3zIigOaoGxKhXIu/h/1UbLMIbzeajm2hLDg6m','Davidbeck78@gmail.com',0),(82,'Beckham','David','$2b$10$yJz/qcvY1AXmE5XkU8c9fOL3ByTKKI3ZAg24T.ogbGTCChlGX8VUS','Davidbeck78@gmail.com',0),(84,'Administrateur','Admin','$2b$10$bxe4PrZ9MtBXlrUuUz8CUO4I9XLCsIQOM/CThG41TyiKZo0LX70Uq','admin@groupomania.org',1),(85,'Hugues','Martin','$2b$10$7jDeLXntadGu0ZV4yI6gN.fPbi8zlvbgNgRfMaHSHql92UNDtTp3a','martinhugues@hotmail.fr',0),(86,'Petrova','Anna','$2b$10$MEwfKtid781m5L/KkzehpOj/y8b9FzbrNJh4zBOt.9BpZiCrJAnxS','melusine11@hotmail.fr',0);
 /*!40000 ALTER TABLE `uti` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -136,4 +136,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-24 15:17:34
+-- Dump completed on 2022-09-28 14:25:21
